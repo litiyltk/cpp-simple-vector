@@ -316,6 +316,8 @@ void TestNoncopiableErase() {
     auto it = v.Erase(v.begin());
     assert(it->GetX() == 1);
     cout << "Done!" << endl << endl;
+    
+    cout << "All tests passed successfully!" << endl;
 }
 
 int main() {

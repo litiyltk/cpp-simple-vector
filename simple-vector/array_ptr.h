@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <cassert>
 #include <cstdlib>
 #include <utility>
 
@@ -26,6 +25,12 @@ public:
         raw_ptr_ = raw_ptr;
     }
 
+    // Конструктор из временного объекта
+    ArrayPtr(ArrayPtr &&other) {
+        raw_ptr_ = other.raw_ptr_;
+        other.raw_ptr_ = nullptr;
+    }
+
     // Запрещаем копирование
     ArrayPtr(const ArrayPtr&) = delete;
 
@@ -39,10 +44,10 @@ public:
 
     // Перемещающий оператор присваивания
     ArrayPtr& operator=(ArrayPtr&& rhs) {
-        if (raw_ptr_ != nullptr) {
-            delete[] raw_ptr_;
+        if (this != &rhs) {
+            raw_ptr_ = rhs.raw_ptr_;
+            rhs.raw_ptr_ = nullptr;
         }
-        raw_ptr_ = std::exchange(rhs.raw_ptr_, nullptr);
         return *this;
     }
 

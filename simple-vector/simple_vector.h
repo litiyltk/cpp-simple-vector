@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cassert>
 #include <initializer_list>
 #include <iterator>
 #include <stdexcept>
@@ -128,6 +129,7 @@ public:
     // Если перед вставкой значения вектор был заполнен полностью,
     // вместимость вектора должна увеличиться вдвое, а для вектора вместимостью 0 стать равной 1
     Iterator Insert(ConstIterator pos, const Type &value) {
+        assert(pos >= begin() && pos <= end());
         auto index = pos - begin();
         if (size_ < capacity_) {
             std::copy_backward(std::make_move_iterator(begin() + index), std::make_move_iterator(end()), end() + 1);
@@ -146,6 +148,7 @@ public:
     }
 
     Iterator Insert(ConstIterator pos, Type&& value) {
+        assert(pos >= begin() && pos <= end());
         auto index = pos - begin();
         if (size_ < capacity_) {
             std::copy_backward(std::make_move_iterator(begin() + index), std::make_move_iterator(end()), end() + 1);
@@ -172,6 +175,7 @@ public:
 
     // Удаляет элемент вектора в указанной позиции
     Iterator Erase(ConstIterator pos) {
+        assert(pos >= begin() && pos < end());
         auto index = pos - begin();
         std::copy(std::make_move_iterator(begin() + index + 1), std::make_move_iterator(end()), begin() + index);
         --size_;
@@ -202,11 +206,13 @@ public:
 
     // Возвращает ссылку на элемент с индексом index
     Type& operator[](size_t index) noexcept {
+        assert(index < size_);
     	return items_[index];
     }
 
     // Возвращает константную ссылку на элемент с индексом index
     const Type& operator[](size_t index) const noexcept {
+        assert(index < size_);
     	return items_[index];
     }
     
