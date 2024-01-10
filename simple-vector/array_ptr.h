@@ -45,8 +45,7 @@ public:
     // Перемещающий оператор присваивания
     ArrayPtr& operator=(ArrayPtr&& rhs) {
         if (this != &rhs) {
-            raw_ptr_ = rhs.raw_ptr_;
-            rhs.raw_ptr_ = nullptr;
+            this->swap(rhs);
         }
         return *this;
     }
